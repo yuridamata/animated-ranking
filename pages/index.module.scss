@@ -1,0 +1,22 @@
+.rankingWrapper{
+  position: relative;
+  padding: 1rem;
+}
+
+.rankingItemWrapper{
+  position:absolute;
+  width: 90vw;
+  max-height: 50px;
+  
+}
+
+.rankingItemWrapper{
+
+  
+}
+
+@for $i from 1 through 10 {
+  .rankingItemWrapper:nth-child(#{$i}){
+    top: #{$i * 75px};
+  }
+}
