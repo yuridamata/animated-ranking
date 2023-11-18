@@ -60,6 +60,38 @@ const initialRanking = [
     avatar: "https://i.pravatar.cc/309",
     position: 10,
   },
+  {
+    matricula: "F000010",
+    name: "Peter Seller",
+    avatar: "https://i.pravatar.cc/309",
+    position: 11,
+  },
+  {
+    matricula: "F000012",
+    name: "Frodo Bolseiro",
+    avatar: "https://i.pravatar.cc/309",
+    position: 12,
+  },
+  {
+    matricula: "F000013",
+    name: "Myke Tison",
+    avatar: "https://i.pravatar.cc/309",
+    position: 13,
+  },
+  {
+    matricula: "F000014",
+    name: "Bilie Jean",
+    avatar: "https://i.pravatar.cc/309",
+    position: 14,
+  },
+  {
+    matricula: "F000015",
+    name: "Gandalf The White",
+    avatar: "https://i.pravatar.cc/309",
+    position: 15,
+  },
+
+
 ];
 
 export const getSuffledRanking = () => {

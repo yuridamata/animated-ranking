@@ -47,5 +47,6 @@ table {
 	border-spacing: 0;
 }
 
+
 @tailwind components;
 @tailwind utilities;
