@@ -20,7 +20,10 @@ const config: Config = {
         ddGrey: "#AAB5C2",
         ddDarkGrey: "#424242",
         ddLightGrey: "#8f8f8f",
-        ddMediumGrey: "#1A1A1A"
+        ddMediumGrey: "#1A1A1A",
+        ddLightGreen: "#17A0BC",
+        ddRed: "#EF4D4D",
+        ddBrown: "#4F2A09",
       },
     },
   },

@@ -1,7 +1,17 @@
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
+/* eslint-disable jsx-a11y/alt-text */
+/* eslint-disable @next/next/no-img-element */
+import {
+  Dispatch,
+  SetStateAction,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 import localFont from "next/font/local";
 import SelectableItem from "@/components/quiz/SelectableItem";
 import { DTODadosRespondente } from "@/pages/quiz";
+import axios from "axios";
+import { AppContext } from "@/contexts/AppContext";
 
 const questions = [
   {
@@ -70,21 +80,17 @@ const DadosExterno = ({ nome, setNome, email, setEmail }: any) => {
 
 export default function IniciarQuiz({
   iniciarQuiz,
-  setDadosRespondente,
-  setRespondendoQuiz,
 }: {
-  iniciarQuiz: Dispatch<SetStateAction<DTODadosRespondente | null>>;
-  setDadosRespondente: Dispatch<SetStateAction<DTODadosRespondente | null>>;
-  setRespondendoQuiz: Dispatch<SetStateAction<boolean>>;
+  iniciarQuiz: (dadosRespondente: DTODadosRespondente) => void;
 }) {
   const [tipoRespondente, setTipoRespondente] = useState<string>("");
   const [matricula, setMatricula] = useState<string>("");
   const [nome, setNome] = useState<string>("");
   const [email, setEmail] = useState<string>("");
-
-  const onIniciarQuiz = () => {
-
-    if(!validarDadosRespondente()){
+  const { globalLoading, setGlobalLoading } = useContext(AppContext);
+  const onIniciarQuiz = async () => {
+    setGlobalLoading(true);
+    if (!validarDadosRespondente()) {
       return;
     }
     const dadosRespondente: DTODadosRespondente = {
@@ -95,7 +101,22 @@ export default function IniciarQuiz({
         email,
       },
     };
-    iniciarQuiz(dadosRespondente);
+    try {
+      const response = await axios.post("http://localhost:3000/quiz/1", {
+        email,
+        nome,
+        matricula,
+      });
+
+      const { id }: { id: number } = response.data;
+
+      setTimeout(() => {
+        setGlobalLoading(false);
+        iniciarQuiz({ ...dadosRespondente, idParticipacao: id });
+      }, 2000);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const validarDadosRespondente = () => {
@@ -162,7 +183,9 @@ export default function IniciarQuiz({
           />
         </div>
       </div>
-      {tipoRespondente === TIPO_RESPONDENTE_FUNCI && <DadosFunci matricula={matricula} setMatricula={setMatricula} />}
+      {tipoRespondente === TIPO_RESPONDENTE_FUNCI && (
+        <DadosFunci matricula={matricula} setMatricula={setMatricula} />
+      )}
       {tipoRespondente === TIPO_RESPONDENTE_EXTERNO && (
         <DadosExterno
           nome={nome}
