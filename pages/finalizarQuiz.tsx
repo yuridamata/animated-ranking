@@ -22,19 +22,29 @@ interface DTOPontuacao {
   pontuacaoTotal: number;
 }
 export default function FinalizarQuiz() {
-  const searchParams = useSearchParams();
   const [loading, setLoading] = useState(false);
-  const idParticipacao = searchParams.get("idParticipacao");
+  
   const [pontuacao, setPontuacao] = useState<DTOPontuacao | null>(null);
   const router = useRouter();
-
+  const searchParams = useSearchParams();
+  const idParticipacao = searchParams.get("idParticipacao");
+  
   useEffect(() => {
     const getPontuacao = async () => {
+
+      if(!idParticipacao){
+        return;
+      }
+
+
       const { data }: { data: DTOPontuacao } = await axios.get(
-        `http://localhost:3000/participacao/${idParticipacao}/resultado`
+        `http://localhost:8080/participacao/${idParticipacao}/resultado`
       );
       setPontuacao(data);
     };
+
+    
+
 
     if (pontuacao === null) {
       getPontuacao();
@@ -76,26 +86,26 @@ export default function FinalizarQuiz() {
 
         <div
           style={{ ...pressStart2P.style }}
-          className="flex flex-wrap gap-4 text-ddBrown pl-20 justify-start items-center bg-[url('/tabuaResultados.png')] bg-center bg-no-repeat w-[80%] h-16"
+          className="flex flex-wrap gap-4 text-ddBrown  pl-20 pr-20 justify-start items-center bg-[url('/tabuaResultados.png')] bg-cover bg-no-repeat w-[415px] h-16"
         >
           <img src="/iconTempo.png" className="w-8 h-8" />
-          <div>Pontos de Tempo: {pontuacao?.pontuacaoTotalTempo} </div>
+          <div>Tempo: {pontuacao?.pontuacaoTotalTempo} </div>
         </div>
 
         <div
           style={{ ...pressStart2P.style }}
-          className="flex flex-wrap gap-4 text-ddBrown pl-20 justify-start items-center bg-[url('/tabuaResultados.png')] bg-center bg-no-repeat w-[80%] h-16"
+          className="flex flex-wrap gap-4 text-ddBrown  pl-20 pr-20 justify-start items-center bg-[url('/tabuaResultados.png')] bg-cover bg-no-repeat w-[415px] h-16"
         >
           <img src="/check.png" className="w-8 h-8" />
-          <div>Pontos de Resposta: {pontuacao?.pontuacaoTotalRespostas} </div>
+          <div>Resposta: {pontuacao?.pontuacaoTotalRespostas} </div>
         </div>
 
         <div
           style={{ ...pressStart2P.style }}
-          className="flex flex-wrap gap-4  text-ddBrown pl-20 justify-start items-center bg-[url('/tabuaResultados.png')] bg-center bg-no-repeat w-[80%] h-16"
+          className="flex flex-wrap gap-4  text-ddBrown  pl-20 pr-20 justify-start items-center bg-[url('/tabuaResultados.png')] bg-cover bg-no-repeat w-[415px] h-16"
         >
           <img src="/chest.png" className="w-8 h-8" />
-          <div>Pontuação Final: {pontuacao?.pontuacaoTotal} </div>
+          <div>Final: {pontuacao?.pontuacaoTotal} </div>
         </div>
 
         <div

@@ -60,7 +60,6 @@ export default function Quiz() {
   const [dadosRespondente, setDadosRespondente] =
     useState<DTODadosRespondente | null>(null);
 
-  const [respostas, setRespostas] = useState([]);
   const [passoAtual, setPassoAtual] = useState(0);
   const [pontuacao, setPontuacao] = useState(0);
   const [quiz, setQuiz] = useState<DTOQuiz | null>(null);
@@ -70,7 +69,7 @@ export default function Quiz() {
   useEffect(() => {
     const fetchQuiz = async () => {
       const { data }: { data: DTOQuiz } = await axios.get(
-        "http://localhost:3000/quiz/1",
+        "http://localhost:8080/quiz/1",
         {
           headers: {
             "Access-Control-Allow-Origin": "*",
@@ -120,7 +119,7 @@ export default function Quiz() {
       console.log("Finalizou o quiz");
       setRespondendoQuiz(false);
       setFinalizouQuiz(true);
-      router.push("/finalizarQuiz");
+      router.push(`/finalizarQuiz?idParticipacao=${dadosRespondente?.idParticipacao}`);
     }
   };
 
@@ -138,7 +137,7 @@ export default function Quiz() {
       return null;
     }
     setGlobalLoading(true);
-    const url = `http://localhost:3000/participacao/${dadosRespondente.idParticipacao}/responder/${quiz?.perguntas[passoAtual].id}/opcao/${idOpcao}`;
+    const url = `http://localhost:8080/participacao/${dadosRespondente.idParticipacao}/responder/${quiz?.perguntas[passoAtual].id}/opcao/${idOpcao}`;
     const { data }: { data: DTOQuizRespondido } = await axios.post(url);
 
     setQuiz((prevQuiz) => {
