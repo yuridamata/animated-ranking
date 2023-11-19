@@ -21,6 +21,7 @@ interface DTOPontuacao {
   pontuacaoTotalTempo: number;
   pontuacaoTotal: number;
 }
+
 export default function FinalizarQuiz() {
   const [loading, setLoading] = useState(false);
   
@@ -36,16 +37,13 @@ export default function FinalizarQuiz() {
         return;
       }
 
-
       const { data }: { data: DTOPontuacao } = await axios.get(
         `http://localhost:8080/participacao/${idParticipacao}/resultado`
       );
       setPontuacao(data);
     };
 
-    
-
-
+  
     if (pontuacao === null) {
       getPontuacao();
     }
@@ -122,7 +120,7 @@ export default function FinalizarQuiz() {
           onClick={() => {
             setLoading(true);
             setTimeout(() => {
-              router.push("/quiz");
+              router.push("/");
             }, 2000);
           }}
         >

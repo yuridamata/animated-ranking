@@ -21,6 +21,7 @@ const config: Config = {
         ddDarkGrey: "#424242",
         ddLightGrey: "#8f8f8f",
         ddMediumGrey: "#1A1A1A",
+        ddOnyx: "#454545",
         ddLightGreen: "#17A0BC",
         ddRed: "#EF4D4D",
         ddBrown: "#4F2A09",

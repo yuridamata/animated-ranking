@@ -103,9 +103,9 @@ export default function IniciarQuiz({
     };
     try {
       const response = await axios.post("http://localhost:8080/participacao/quiz/1", {
-        email,
-        nome,
-        matricula,
+        email: email ? email : null,
+        nome: nome ? nome : null,
+        matricula: matricula ? matricula : null,
       });
 
       const { id }: { id: number } = response.data;
@@ -115,6 +115,7 @@ export default function IniciarQuiz({
         iniciarQuiz({ ...dadosRespondente, idParticipacao: id });
       }, 2000);
     } catch (error) {
+      setGlobalLoading(false);
       console.log(error);
     }
   };
