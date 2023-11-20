@@ -9,7 +9,11 @@ import localFont from "next/font/local";
 
 const pressStart2P = localFont({ src: "../public/pressStart2P-Regular.ttf" });
 
-interface usuarioRanking {posicao: number; nome: string; pontuacao: number;}
+interface usuarioRanking {
+  posicao: number;
+  nome: string;
+  pontuacao: number;
+}
 
 export default function Home() {
   const [ranking, setRanking] = useState([] as any);
@@ -17,39 +21,66 @@ export default function Home() {
   const [isSorting, setIsSorting] = useState(false);
   const [tamanhoRanking, setTamanhoRanking] = useState(0);
 
+
   const onGetRanking = async () => {
     if (isSorting) {
       return;
     }
 
-
     const hoje = new Date();
 
-    const dia = hoje.getDate().toString().padStart(2, '0');
-    const mes = (hoje.getMonth() + 1).toString().padStart(2, '0');
+    const dia = hoje.getDate().toString().padStart(2, "0");
+    const mes = (hoje.getMonth() + 1).toString().padStart(2, "0");
     const ano = hoje.getFullYear().toString();
 
-    const { data } : {
-      data: usuarioRanking[]
-    }= await axios.get(
-      `http://localhost:8080/quiz/1/ranking/dia/${ano}-${mes}-${dia}`                            
+    const {
+      data,
+    }: {
+      data: usuarioRanking[];
+    } = await axios.get(
+      `http://localhost:8080/quiz/1/ranking/dia/${ano}-${mes}-${dia}`
     );
-    setRanking(
-      data.map((elementoRanking: usuarioRanking) => {
-        return {
-          
-          position: elementoRanking.posicao,
-          name: elementoRanking.nome,
-          points: elementoRanking.pontuacao,
-        };
-      })
-    );
+    
+    const transformedUsuarios =   data.map((elementoRanking: usuarioRanking) => {
+      return {
+        position: elementoRanking.posicao,
+        name: elementoRanking.nome,
+        points: elementoRanking.pontuacao,
+      };
+    })
+
+
+    let atualizar = false;
+    
+    if(data.length === ranking.length){
+      console.log(data)
+      console.log(ranking)
+      for(let i = 0; i < ranking.length; i++){
+        if(data[i].nome !== ranking[i].name){              
+          atualizar = true;
+          break;
+        }
+      }
+    }else{ // Quando tamanho dos arrays forem diferentes
+      atualizar = true;
+    }
+
+    if(atualizar){
+      setRanking(transformedUsuarios);
+    }
   };
 
   const cbOnGetRanking = useCallback(onGetRanking, []);
 
   useEffect(() => {
-    cbOnGetRanking();
+    cbOnGetRanking()
+    const interval = setInterval(() => {
+      cbOnGetRanking();
+    },5000)
+
+    return () => {
+      clearInterval(interval)
+    }
   }, [cbOnGetRanking]);
 
   useEffect(() => {
@@ -93,22 +124,6 @@ export default function Home() {
     setRanking(array);
   };
 
-  const getSuffledRanking = () => {
-    const array = [...ranking];
-    for (let i = array.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [array[i], array[j]] = [array[j], array[i]];
-    }
-    return array;
-  };
-
-  const shuffle = () => {
-    const newRanking = getSuffledRanking();
-    setRanking(newRanking);
-    setCurrentStep(0);
-    setIsSorting(true);
-  };
-
   useEffect(() => {
     if (isSorting === true) {
       console.log("Ranking changed");
@@ -120,12 +135,14 @@ export default function Home() {
 
   return (
     <main className={`${pressStart2P.className}`}>
+      
       <div
         className={`relative bg-[url('/bgSlice.png')] bg-center bg-repeat flex flex-col  items-center`}
         style={{
           minHeight: tamanhoRanking + 1000,
         }}
       >
+       
         <div className={classes.bgColor}></div>
         <div className="flex flex-wrap justify-center items-center gap-9 py-8">
           <img
@@ -134,12 +151,12 @@ export default function Home() {
             src="dd_titulo_icone.png"
           />
           <img
-          
             title="Título Dungeons & Data"
             className="z-50 relative h-[70%] w-[70%]"
             src="/dd_titulo_texto.png"
           />
         </div>
+        
         <div className="z-10 text-center bg-ddBlack  mt-10 rounded-2xl min-w-[80%]">
           <div className="text-7xl text-white z-10">
             <div className={`text-5xl mt-10`}>PONTUAÇÃO</div>
