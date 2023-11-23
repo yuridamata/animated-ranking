@@ -142,9 +142,16 @@ export default function Home() {
           minHeight: tamanhoRanking + 1000,
         }}
       >
-       
         <div className={classes.bgColor}></div>
-        <div className="flex flex-wrap justify-center items-center gap-9 py-8">
+        <img
+          title="Logo Dungeons & Data"
+          className="z-50 relative mt-8 h-[5%] w-[5%]"
+          src="logo-bb-100px.png"
+          style={{
+            borderRadius: "5%",
+          }}
+        />
+        <div className="flex flex-wrap justify-center items-center gap-9 pt-4 pb-8">
           <img
             title="Logo Dungeons & Data"
             className="z-50 relative  h-[15%] w-[15%]"
