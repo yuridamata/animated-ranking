@@ -44,7 +44,7 @@ const DadosFunci = ({ matricula, setMatricula }: any) => {
         Digite a sua matrícula
       </div>
       <input
-        className="bg-[#292929] w-/12 shadow appearance-none border border-ddBlack rounded text-white p-4 text-lg leading-tight focus:outline-none focus:shadow-outline"
+        className="bg-[#292929] w-/12 shadow appearance-none border border-ddBlack rounded text-white p-4 text-lg leading-tight focus:outline-none focus:shadow-outline placeholder-ddLightGrey"
         onChange={(e) => setMatricula(e.target.value)}
         value={matricula}
       />
@@ -102,10 +102,10 @@ export default function IniciarQuiz({
       },
     };
     try {
-      const response = await axios.post("http://localhost:3000/quiz/1", {
-        email,
-        nome,
-        matricula,
+      const response = await axios.post("http://localhost:8080/participacao/quiz/1", {
+        email: email ? email : null,
+        nome: nome ? nome : null,
+        matricula: matricula ? matricula : null,
       });
 
       const { id }: { id: number } = response.data;
@@ -115,6 +115,7 @@ export default function IniciarQuiz({
         iniciarQuiz({ ...dadosRespondente, idParticipacao: id });
       }, 2000);
     } catch (error) {
+      setGlobalLoading(false);
       console.log(error);
     }
   };
@@ -133,6 +134,17 @@ export default function IniciarQuiz({
     }
 
     if (tipoRespondente === TIPO_RESPONDENTE_EXTERNO && (!nome || !email)) {
+      return false;
+    }
+
+
+    const regexMatricula = /^(F|C)\d{7}$/;
+    if(matricula && !regexMatricula.test(matricula)){
+      return false
+    }
+
+    const regexEmail = /[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
+    if(email && !regexEmail.test(email)){
       return false;
     }
 

@@ -34,7 +34,7 @@ export default function RankingItem({ name, avatar, position, points }: any) {
     <div className={`flex items-center justify-between  px-4 py-2  text-white rounded-md shadow h-12 border-[3px] border-solid ${getPositionClasses(position)}`}>
       <div className="flex items-center gap-4">
         {getPositionIndicator(position)}
-        <span className="">{name}</span>
+        <span className="uppercase">{name}</span>
       </div>
       <span className="">{points} pts</span>
     </div>
